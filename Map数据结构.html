@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Document</title>
+	</head>
+	<body>
+		<div id="#myDiv"></div>
+	</body>
+	<script type="text/javascript">
+		//为什么会有Map
+		// javascript的对象的本质是键值对的集合(Hash结构)，但是只能用字符串作为键，
+		var data = {},
+			myDiv = document.getElementById("#myDiv");
+
+		data[myDiv] = "metadata";
+		console.log(data);//{[object HTMLDivElement]: "metadata"}
+		//Object提供的是"字符串：值"对应的方式， Map提供了"值-值"的对应，是一种更完善的hash结构的实现
+		var m = new Map();
+		var o = {p: "Hello World"};
+
+		console.log(m.set(o, "content"));//{Object {p: "Hello World"} => "content"}
+		console.log(m.get(o));//content
+		console.log(m.has(o));//true
+		console.log(m.delete(o));//true
+
+		//Map也可以接受数组作为参数，但是该数组的成员是一个个表示键值对的数组
+
+		var map = new Map([["name", "小张"], ["age", 12]]);
+		console.log(map);//{"name" => "小张", "age" => 12};
+		/*var a = {"name" => "小张", "age" => 12};
+		console.log(typeof a)*/
+		console.log(map.has("name"));//true
+		console.log(map.get("name"));//小张
+
+		// Map的操作方法
+		// 1、set(key, value)
+			let map1 = new Map();
+			map1.set(1, "1").set(2, "2");
+			console.log(map1);
+		// 2、get(key); 如果有会返回key所对应的值， 如果没有回返回undefined
+			let map2 = new Map();
+			var hello = function(){
+				console.log("hello");
+			};
+			map2.set(hello, "Hello es6");
+			console.log(map2);//{function (){ console.log("hello"); } => "Hello es6"}
+			console.log(map2.get(hello));	//hello es6
+		//3、has(key); 查找有没有这个键，有返回true
+			console.log(map1.has(1));//true
+			console.log(map1.has(3));//false
+		//4、delete(key);删除某一个键 成功返回true
+
+		//map的3种遍历器生成函数， 1种遍历方法
+		let map3 = new Map([["F", "no"], ["T", "yes"]]);
+		// 1、keys():返回键名的遍历器
+			for(let key of map3.keys()){
+				console.log(key);// F T
+			};
+		//2、values():返回值的遍历器
+			for(let value of map3.values()){
+				console.log(value); // no yes
+			}
+		//3、entries():返回所有成员的遍历器
+			for(let item of map3.entries()){
+				console.log(item);//["F", "no"] ["T", "yes"];
+			}
+			for(let item of map1.entries()){
+				console.log(item[0], item[1]);
+			}
+			for(let [key, value] of map3){
+				console.log(key, value);
+			}
+			for(let item of map3){
+				console.log(item);
+			}
+		//4、forEach()遍历数组的所有成员
+			map3.forEach(function(value, key, map){
+				console.log(key, value);
+			})
+
+		//与其他数据结构相互转换
+		//1、map转换成数组 最方面的方法就是使用扩展运算符
+		let myMap = new Map().set(true, 2).set({foo:3}, ["abc"]);
+		let arrMap = [...myMap];
+		console.log(arrMap);
+		
+		//2、数组转换成Map
+		let map5 = new Map([[true, 2], [{foo:2}, ["abc"]]]);
+		console.log(map5);
+
+		//3、Map转换成对象 只用map的所有的键都是字符串才能转换成对象
+			function mapToObj(map){
+				let obj = {};
+				for(let [k, v] of map){
+					obj[k] = v;
+				}
+				return obj;
+			}
+			var map6 = new Map().set("yes", true).set("no", false);
+			console.log(mapToObj(map6));
+
+		//4、对象转换成Map
+			function objToMap(obj){
+				let map = new Map();
+				for(let k of Object.keys(obj)){
+					map.set(k, obj[k]);
+				} 
+				return map;
+			}
+			var o = {good: "ok"};
+			console.log(objToMap(o));
+		//5、map转换成JSON
+			//键名为字符串的map转换成JSON
+			function strMapToJson(strMap){
+				// map先转化成对象
+				return JSON.stringify(mapToObj(strMap));
+			}
+			let map8 = new Map();
+			map8.set("good", "ok").set("bad", "!ok");
+			console.log(strMapToJson(map8));
+			//键名为非字符串的转化成JSON
+			function mapToArrayJson(map){
+				// 先转成数组
+				return JSON.stringify([...map]);
+			}
+			let map9 = new Map();
+			map9.set(true, 2).set({foo:3}, ["abc"]);
+			console.log(mapToArrayJson(map9));
+
+		//6、JSON转换成Map
+			//一般都是所有的键名都是字符串
+			function jsonToStrMap(jsonStr){
+				//json先转换成对象 对象再转换成map
+				return objToMap(JSON.parse(jsonStr));
+			}
+			//特殊的就是JSON是数组, 但是每个数组成员是有两个成员
+			function jsonToMap(json){
+				return new Map(JSON.parse(json));
+			}
+			console.log(jsonToMap('[[true, 7], [{"foo":0}, ["abc"]]]'));
+
+
+
+
+
+
+
+	</script>
+</html>
