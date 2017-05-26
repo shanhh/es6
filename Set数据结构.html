@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Document</title>
+	</head>
+	<body>
+		
+	</body>
+	<script type="text/javascript">
+		//ES6提供的一种新的数据结构—————Set, 类似于数组,特点是这种数组中没用重复的值
+		var set = new Set([1, 1, "1", 11]);
+		//Array.from()是将Set结构转化成数组
+		console.log(Array.from(set)) // [1, "1", 11]
+
+		//Set结构实例有以下属性
+		//Set.prototype.constructor:构造函数，默认计时Set函数
+		//Set.prototype.size:返回Set实例的成员总数
+		console.log(set.size); //3
+
+		//Set实例的方法分为两大类， 一种是操作方法，一种是遍历方法 
+
+		//4种操作方法如下
+		//1、.add(value):添加值，返回Set结构本身
+			set.add(4).add("5").add("5");
+			console.log(set);//set(5)[1, "1", 11, 4, 11]
+		//2、.delete(value):删除值，返回一个boolean值,表示删除成功
+			console.log(set.delete("5")); //true;
+		//3、.has(value); //返回一个boolean值，表示参数是否为Set的成员
+			console.log(set.has("5")); //false;
+		//4、.clear(); 清除所有的对象 没有返回值
+			console.log(set.clear()); //undefined
+
+		//4种遍历方法
+		//1、keys():返回一个键名 
+			let set2 = new Set(["people", "student", "singer"]);
+
+			for(let item of set2.keys()){
+				console.log(item);//people student singer
+			}
+
+		//2、values():返回键值
+			//由于Set结构没有键名，只有键值(或者说键名和键值是同一个);所以keys()和values()的行为一致;
+			for(let item of set2.values()){
+				console.log(item);//people student singer
+			}
+			//也可以直接省略掉values();
+			for( let item of set2 ){
+				console.log(item);
+			}
+		//3、entries():返回键值对
+
+			for(let item of set2.entries()){
+				console.log(item);
+				//["people", "people"]
+				//["student", "student"]
+				//["singer", "singer"]
+			}
+
+		//4、forEach():使用回调函数遍历每一个成员
+			set2.forEach(function(item){
+				console.log(item);
+			})
+
+			//扩展 下面这种情况会报错
+			/*set2.map(function(item){
+				console.log(item);
+			})*/
+			//map遍历真数组
+			Array.from(set2).map(function(item){
+				console.log(item);
+			})
+	</script>
+</html>
