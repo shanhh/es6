@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Document</title>
+	</head>
+	<body>
+		
+	</body>
+	<script type="text/javascript">
+		//es5中有对象的属性名都是字符串，命名的时候容易造成冲突
+		//es6提供一个机制，能够保证属性名都是独一无二的 es6引入Symbol表示独一无二的值
+		// 引入了一种新的数据类型：es5有 Undefined Null Boolean String Number Object 
+		// es6 引入了Symbol 是Javascript的第七种数据类型
+
+		let s = Symbol();
+		console.log(s);
+		// Symbol 函数不能使用new命令，否则会报错 因为Symbol的值不是对象
+		// 它是一种类似于字符串形式的数据类型
+
+		let s1 = Symbol();
+		let s2 = Symbol();
+		console.log(s1 === s2);//false;
+
+		//不能与其他类型的值进行运算 会报错
+
+		// 用法
+		let mySymbol = Symbol();
+
+		//第一种写法
+		var obj = {};
+		obj[mySymbol] = "hello";
+
+		//第二种写法
+		var obj = {
+			[mySymbol] : "hello"
+		}
+
+		//第三种写法
+		var obj = {};
+		Object.defineProperty(obj, mySymbol, {value: 'hello'});
+
+		console.log(obj[mySymbol]);//hello
+		console.log(obj);//{Symbol(): "hello"}
+		// 注意
+		// 使用symol的值作为属性名的时候不能使用点运算，会报错
+		for(var n in obj){
+			console.log(obj[i]);
+		}
+		// for in  for of循环不能使用  Object.keys()不能用
+		// 使用Object.getOwnPropertySymbols获得的是属性名，返回的是一个数组
+		console.log(Object.getOwnPropertySymbols(obj));//[Symbol()]
+
+		// 用Symbol的值作为属性值的时候，不会被常规方法遍历到，
+		// 因此可以利用这个特性为对象定义一些非私有但又希望只用于内部的方法
+
+		// 扩展数组原型会导致数组的for in 遍历失效
+		// 封装类似于forEach()的方法
+		/*Array.prototype.myEach = function(callback){
+			for(let i = 0; i < this.length; i++){
+				callback(this[i], i);
+			}
+		}
+
+		var myArr = [1, "1", 2, 3];
+		myArr.myEach(function(item, index){
+			console.log(item, index)
+		})
+
+		// 但是这样会导致for in遍历数组的方法失效
+		for(var n in myArr){
+			console.log(myArr[n]); //会打印出封装的函数
+		};
+
+		// 如何解决
+		// 方法1
+		for(var n = 0; n < myArr.length; n++){
+			console.log(myArr[n]);
+		}*/
+		// 方法2
+		let myForEach = Symbol();
+		Array.prototype[myForEach] = function(callback){
+			for(let i = 0; i < this.length; i++){
+				callback(this[i], i);
+			}
+		}
+		var myArray = [1, "1", 2, 3];
+		myArray[myForEach](function(item){
+			console.log(item);
+		})
+		// 接着使用for in测试
+		for(var n in myArray){
+			console.log(myArray[n]); //可以使用了
+		};
+
+		// 用Symbol的值作为属性值的时候，不会被常规方法遍历到，
+		// 因此可以利用这个特性为对象定义一些非私有但又希望只用于内部的方法
+
+
+	</script>
+</html>
