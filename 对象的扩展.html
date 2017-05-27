@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Document</title>
+	</head>
+	<body>
+		
+	</body>
+	<script type="text/javascript">
+		//1、书写的简洁
+		let age = 23;
+		let Person = {
+			name:"shanhh",
+			age,//等同于age：age,
+			//等同于say:function(){};
+			say(){
+				console.log(`my name is ${this.name}`);
+			}
+		}
+		console.log(Person); //{name: "shanhh", age: 23, say: function}
+
+		//2、属性名表达式
+		// js中对象的属性有两种表达方法
+		let obj = {};
+		obj.foo = true;
+
+		let test = "es6";
+		obj[test] = "good";
+		console.log(obj) //{foo: true, es6: "good"}
+		//但是 es5中字面量创建的时候只能使用.方法
+		//es6能使用[]
+		let es6Obj = {
+			foo: true,
+			abc: 123,
+			[test]: "good"
+		}
+		console.log(es6Obj); //{foo: true, abc: 123, es6: "good"}
+	</script>
+</html>
