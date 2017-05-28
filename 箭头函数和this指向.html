@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Document</title>
+	</head>
+	<body>
+		<div>点击</div>
+	</body>
+	<script type="text/javascript">
+		// 箭头函数 =>
+		// 1、如果箭头函数需要多个参数或者不需要参数,()表示参数部分
+		var f = () => 5;
+		var f1 = (a, b) => a + b;
+		// 2、如果箭头函数的代码块表示多条语句，就用花括号括起来
+		var f3 = num1 => {
+			if(num1 > 2){
+				return num1;
+			}else{
+				return 0;
+			}
+		}
+		console.log(f3(3))
+		// this的指向 函数执行的时候才会创建的内部对象，代表持有当前函数的对象
+		// 1、对象内部属性值为函数，当函数执行的时候，this表示当前对象
+		let person = {
+			name:"shan",
+			say(){
+				console.log(this)
+			}
+		}
+		person.say();
+		// dom事件中的this 事件的属性值为函数
+		document.body.onclick = function(){
+			console.log(this);
+		}
+		// 2、构造函数中的this，执行的时候代表新对象
+		function Animal(name, age){
+			this.name = name;
+			this.age = age;
+		}
+		var animal = new Animal("sheep", 2)
+		//3 call和apply执行函数的时候this代表call和apply的第一个实参
+		function Dog(name, age, type){
+			Animal.call(this, name, age);
+			this.type = type;
+		}
+		var dog = new Dog("tom", 2, "dog");
+		// 4其余场景指向window
+
+		// 在箭头函数中 this的指向是固定的 总是指向函数所在的对象
+		let Singer = {
+			name:"shan",
+			run(){
+				console.log(this + "外层");
+				(() => {
+					console.log(this)
+				})();
+			},
+			say: () => {
+				console.log(this + "指向window");
+			}
+		}
+		Singer.run();
+		Singer.say();
+
+		// 应用 一个函数内部的this指向传递给下一个内部的函数接着用这个this
+		// 1、自定义that接收
+		/*$("div").on("click", funcion(){
+			var that = this;
+			$.get("https/localhost:88888/list", function(data){
+				that.html(data);
+			}, "json")
+		})*/
+		//2、使用箭头函数
+		/*$("div").on("click", funcion(){
+			$.get("https/localhost:88888/list", data => {
+				this.html(data)
+			}, "json")
+		})*/
+		//3、使用bind
+		/*$("div").on("click", funcion(){
+			$.get("https/localhost:88888/list", function(data){
+				this.html(data);
+			}.bind(this), "json")
+		})*/
+	</script>
+</html>
