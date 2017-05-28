@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Document</title>
+	</head>
+	<style>
+		html, body{
+			margin: 0;
+		}
+		div{
+			margin: 20px;
+			background: hotpink;
+		}
+	</style>
+	<body>
+		<div>0</div>
+		<div>1</div>
+		<div>2</div>
+		<div>3</div>
+	</body>
+	<script type="text/javascript">
+		// let作用域只在所在的代码块中有效
+			/*{
+				let a = 0
+			}*/
+		// let不存在变量提升
+			/*console.log(b); 
+			let b = 0*/
+		// let不允许重复命名
+			/*var a = 3;
+			let a = 3;*/
+		// 暂时性死区
+			/*var a = 5;
+			if(1){
+				console.log(a); //a is not defined
+				let a = 2;
+			}*/
+
+		// 用法
+		let divs = document.querySelectorAll("div");
+		for(var n = 0; n < divs.length; n++){
+			divs[n].onclick = function(){
+				console.log(n);
+			}
+		}
+		// 因为先执行的是for循环，内部的函数只是在点击的时候才执行，执行的时候内部已经n变成了4;只有到4才跳出循环
+		// 如何让上面点击的时候的打印是div的下标呢
+		//第一种 把var改成let
+		for(let n = 0; n < divs.length; n++){
+			divs[n].onclick = function(){
+				console.log(n);
+			}
+		}
+		// 第二种 自定义属性
+		for(var n = 0; n < divs.length; n++){
+			divs[n].index = n;
+			divs[n].onclick = function(){
+				console.log(this.index);
+			}
+		}
+		// 第三种 使用闭包 这样相当于建立了三个函数(参数不同)
+		for(var n = 0; n < divs.length; n++){
+			(function(n){
+				divs[n].onclick = function(){
+					console.log(n);
+				}
+			})(n);	
+		}
+
+		// const也有let的特点
+		// const声明常量用的
+		const PI = 3.14;
+		// consts声明复合型变量的时候,变量名不指向数据,而是指向数据所在的地址
+		// 故它并不是保证该地址的数据不变，而是保证该地址的指向不变
+		const arr = [];
+		arr.push(1,3)
+		// arr = [1,1] //报错
+	</script>
+</html>
